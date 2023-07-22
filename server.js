@@ -1,11 +1,9 @@
 const express = require("express");
 const app = express();
-const port = 3000; // You can change this port to any value you prefer
+const port = 3000;
 
-// Middleware to parse JSON data in request body
 app.use(express.json());
 
-// Data store for chat messages
 let messages = [
   {
     id: 1,
@@ -14,10 +12,9 @@ let messages = [
   },
 ];
 
-// Route to create a new message
 app.post("/messages", (req, res) => {
   const { id, from, text } = req.body;
-  if (!id || !from || !text) {
+  if (!from || !text) {
     return res
       .status(400)
       .json({ error: "Please provide id, from, and text in JSON format." });
@@ -28,12 +25,10 @@ app.post("/messages", (req, res) => {
   res.status(201).json(newMessage);
 });
 
-// Route to read all messages
 app.get("/messages", (req, res) => {
   res.json(messages);
 });
 
-// Route to read one message specified by an ID
 app.get("/messages/:id", (req, res) => {
   const messageId = parseInt(req.params.id);
   const message = messages.find((msg) => msg.id === messageId);
@@ -43,7 +38,6 @@ app.get("/messages/:id", (req, res) => {
   res.json(message);
 });
 
-// Route to delete a message by ID
 app.delete("/messages/:id", (req, res) => {
   const messageId = parseInt(req.params.id);
   const index = messages.findIndex((msg) => msg.id === messageId);
